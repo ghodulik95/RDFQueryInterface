@@ -47,15 +47,16 @@ links.forEach(function(link) {
   
 });
 
-var width = 960,
-    height = 500;
+var width = 1280,
+    height = 720;
 
 var force = d3.layout.force()
     .nodes(d3.values(nodes))
     .links(links)
     .size([width, height])
-    .linkDistance(180)
-    .charge(-300)
+    .linkDistance(335)
+	.gravity(0.05)
+    .charge(-1200)
     .on("tick", tick)
     .start();
 
@@ -69,8 +70,8 @@ svg.append("defs").selectAll("marker")
   .enter().append("marker")
     .attr("id", function(d) { return d; })
     .attr("viewBox", "0 -5 10 10")
-    .attr("refX", 22)
-    .attr("refY", -2.5)
+    .attr("refX", 36)
+    .attr("refY", -0)
     .attr("markerWidth", 6)
     .attr("markerHeight", 6)
     .attr("orient", "auto")
@@ -86,20 +87,20 @@ var path = svg.append("g").selectAll("path")
 var circle = svg.append("g").selectAll("circle")
     .data(force.nodes())
   .enter().append("circle")
-    .attr("r", 12)
+    .attr("r", 24)
     .call(force.drag);
 
 var text = svg.append("g").selectAll("text")
     .data(force.nodes())
   .enter().append("text")
-    .attr("x", 12)
+    .attr("x", 24)
     .attr("y", ".31em")
     .text(function(d) { return d.name; });
 	
 var pathLabel = svg.append("g").selectAll("text")
     .data(force.links())
 	.enter().append("text")
-    .attr("x", 12)
+    .attr("x", 24)
     .attr("y", ".31em")
     .text(function(d) { return "Label:"+d.label; });
 
@@ -116,7 +117,7 @@ function linkArc(d) {
       dy = d.target.y - d.source.y,
       dr = Math.sqrt(dx * dx + dy * dy);
   //return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
-  return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+  return "M" + d.source.x + "," + d.source.y + " " + d.target.x + "," + d.target.y;
 }
 
 function transform(d) {
@@ -124,7 +125,7 @@ function transform(d) {
 }
 
 function linkTransform(d) {
-  return "translate(" + ((d.source.x + d.target.x)/2) + "," + ((d.source.y + d.target.y)/2) + ")";
+  return "translate(" + (((d.source.x + d.target.x)/2)-12) + "," + (((d.source.y + d.target.y)/2)-12) + ")";
 }
 
 </script>
