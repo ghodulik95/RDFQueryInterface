@@ -1,0 +1,11 @@
+.circle {
+	fill: #FFF380;
+	stroke: orange;
+}
+.circle_selected {
+	fill: #FFF380;
+	stroke: orange;
+}
+.label {
+	font-size: 12px;
+}
