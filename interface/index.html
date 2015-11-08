@@ -7,6 +7,28 @@
 		<script type="text/javascript" src="../d3/d3.v3.js"></script>
 	</head>
 	<body>
+		<div class="sidebar">
+			<fieldset>
+				<legend>Mode</legend>
+				<form>
+					<input type="radio" name="mode" value="select" checked="checked" onclick="changeMode(this);">Select<br>
+					<input type="radio" name="mode" value="node" onclick="changeMode(this);">Node<br>
+					<input type="radio" name="mode" value="edge" onclick="changeMode(this);">Edge<br>
+					<input type="radio" name="mode" value="conn_edge" onclick="changeMode(this);">Connection Edge
+				</form>
+			</fieldset>
+			<fieldset>
+				<legend>Edit Selection</legend>
+				<form>
+					Label:<br>
+					<input type="text" name="label"><br>
+					<input type="button" value="save"><br>
+					<input type="button" value="delete">
+				</form>
+			</fieldset>
+		</div>
+		<div class="content">
+		</div>
 		<script type="text/javascript" src="d3code.js"></script>
 	</body>
 </html>

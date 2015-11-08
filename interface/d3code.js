@@ -39,7 +39,7 @@ nodes.push({
 });
 	
 //Create svg
-var svg = d3.select("body")
+var svg = d3.select(".content")
             .append("svg")
             .attr("width", w)   
             .attr("height", h);
@@ -80,4 +80,9 @@ function updateSVG() {
 	//Create edges
 	//Create connection edges
 	//Create edge label nodes
+}
+
+//Handle mode change
+function changeMode(mode) {
+    console.log('New mode: ' + mode.value);
 }

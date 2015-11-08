@@ -9,3 +9,14 @@
 .label {
 	font-size: 12px;
 }
+.sidebar {
+	position:absolute;
+	left:0; top:0; bottom: 0;
+	width: 200px;
+	background-color: #E5E4E2;
+}
+.content {
+	position: absolute;
+	left:200px; top:0; right:0; bottom:0;
+}
+
