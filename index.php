@@ -15,11 +15,14 @@
 	
 	$.ajax({
 		type: "POST",
-		url: "testing.php", //Relative or absolute path to response.php file
-		data: {action:'test'},
+		url: "ajaxFunctions.php", //Relative or absolute path to response.php file
+		data: {
+				action:'GetEdges',
+				databaseName: 'LUMBOld',
+				tableName: 'LUBM'
+			  },
 		success: function(ret) {
-			val = JSON.parse(ret);
-			alert(val['one']);
+			$("body").html(ret);
 		}
 		}).done(function() {alert("done");})
 		.fail(function(){ alert("fail");});
