@@ -11,7 +11,7 @@
 			<fieldset>
 				<legend>Mode</legend>
 				<form>
-					<input type="radio" name="mode" value="select" checked="checked" onclick="changeMode(this);">Select<br>
+					<input type="radio" name="mode" value="select" onclick="changeMode(this);" id="defaultModeButton">Select<br>
 					<input type="radio" name="mode" value="node" onclick="changeMode(this);">Node<br>
 					<input type="radio" name="mode" value="edge" onclick="changeMode(this);">Edge<br>
 					<input type="radio" name="mode" value="conn_edge" onclick="changeMode(this);">Connection Edge
@@ -21,7 +21,7 @@
 				<legend>Edit Selection</legend>
 				<form>
 					Label:<br>
-					<input type="text" name="label"><br>
+					<input type="text" id="label" name="label"><br>
 					<input type="button" value="save"><br>
 					<input type="button" value="delete">
 				</form>
