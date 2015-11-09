@@ -43,17 +43,20 @@ var edges;
 var conn_edges;
 var edge_labels;
 
+var selected = -1;
+
 updateSVG();
 
 //Get the text field
 var labelTextField = document.getElementById("label");
 
-//Create SVG given data
-function updateSVG() {   
+//Update the SVG given data
+function updateSVG() {   	
 	//Create node circles
 	circles = svg.selectAll("circle")
-		.data(nodes)
-		.enter()
+		.data(nodes);
+		
+	circles.enter()
 		.append("circle")
 		.on("click", onclick)
 		.attr("class", "circle")
@@ -61,11 +64,14 @@ function updateSVG() {
 			return "translate(" + (d.x*w) + "," + (d.y*h) + ")";
 		})
 		.attr("r", circleRadius);
+		
+	circles.exit().remove();
 	
 	//Create text labels for circles
 	labels = svg.selectAll("text")
-		.data(nodes)
-		.enter()
+		.data(nodes);
+		
+	labels.enter()
 		.append("text")
 		.on("click", onclick)
 		.attr("class", "label")
@@ -76,6 +82,7 @@ function updateSVG() {
 			return "translate(" + (d.x*w-7) + "," + (d.y*h+2) + ")";
 		});
 		
+	labels.exit().remove();
 	//Create edges
 	//Create connection edges
 	//Create edge label nodes
@@ -84,16 +91,20 @@ function updateSVG() {
 //Handle mouse click
 //Note: if we click on a circle, then the function is called twice (from the circle & background)
 //Not sure how to check if there is an object at the coordinates
-function onclick(d) {
-	console.log(mode);
+function onclick(d, i) {
 	var coords = d3.mouse(this);
 	var x = coords[0];
 	var y = coords[1];
 	if (d != undefined) {
 		//Clicked on an existing object
-		console.log("this is an object");
+		if (d.type == 0) {
+			//Select the circle
+			//console.log("selecting the circle");
+			select(i);
+		}
 	}
 	else {
+		//console.log("this is not an object");
 		switch(mode) {
 			case "node":
 				maxNodeID += 1;
@@ -117,6 +128,24 @@ function onclick(d) {
 				break;
 		}
 	}	
+}
+
+//Select circle i if not selected, deselect otherwise
+function select(i) {
+	var circle = d3.select(circles[0][i]);
+	if (selected != i) {
+		//deselect the previously selected circle
+		if (selected != -1)
+			select(selected);
+		//select
+		circle.attr("class", "circle_selected");
+		selected = i;
+	}
+	else {
+		//deselect
+		circle.attr("class", "circle");
+		selected = -1;
+	}
 }
 
 //Change mode

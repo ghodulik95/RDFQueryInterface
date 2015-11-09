@@ -3,11 +3,18 @@
 	stroke: orange;
 }
 .circle_selected {
-	fill: #FFF380;
+	fill: #CDC14E;
 	stroke: orange;
 }
 .label {
 	font-size: 12px;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor:default;
 }
 .sidebar {
 	position:absolute;
