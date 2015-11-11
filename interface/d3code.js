@@ -345,8 +345,8 @@ function clickedDelete() {
 		}
 	}
 	//Delete the node
-	selectNode(selectedNode);
 	nodes.splice(selectedNode, 1);
+	selectNode(selectedNode);
 	//Redraw SVG completely
 	nodeLabels.remove();
 	nodeCircles.remove();
