@@ -54,14 +54,16 @@ var labelTextField = document.getElementById("label");
 
 //Update the SVG given data
 function updateSVG() {   
+	//Deselect
+	selectNode(selectedNode);
 	//Create node nodeCircles
-	nodeCircles = layer2.selectAll("circle")
+	nodeCircles = layer2.selectAll(".node")
 		.data(nodes);
 		
 	nodeCircles.enter()
 		.append("circle")
 		.on("click", onclick)
-		.attr("class", "circle")
+		.attr("class", "node")
 		.attr("transform", function(d) {
 			return "translate(" + (d.x*w) + "," + (d.y*h) + ")";
 		})
@@ -70,13 +72,13 @@ function updateSVG() {
 	nodeCircles.exit().remove();
 	
 	//Create text labels for circles
-	nodeLabels = layer2.selectAll("text")
+	nodeLabels = layer2.selectAll(".node_label")
 		.data(nodes);
 		
 	nodeLabels.enter()
 		.append("text")
 		.on("click", onclick)
-		.attr("class", "label")
+		.attr("class", "node_label")
 		.text(function(d) {
 			return d.text;
 		})
@@ -216,12 +218,12 @@ function selectNode(i) {
 		if (selectedNode != -1)
 			selectNode(selectedNode);
 		//select
-		circle.attr("class", "circle_selected");
+		circle.attr("class", "node_selected");
 		selectedNode = i;
 	}
 	else {
 		//deselect
-		circle.attr("class", "circle");
+		circle.attr("class", "node");
 		selectedNode = -1;
 	}
 }

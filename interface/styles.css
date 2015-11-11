@@ -1,8 +1,8 @@
-.circle {
+.node {
 	fill: #FFF380;
 	stroke: orange;
 }
-.circle_selected {
+.node_selected {
 	fill: #CDC14E;
 	stroke: orange;
 }
@@ -15,7 +15,7 @@
 	stroke-width: 2;
 	stroke-dasharray: 5,5;
 }
-.label {
+.node_label {
 	font-size: 12px;
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
