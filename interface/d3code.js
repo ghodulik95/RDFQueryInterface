@@ -38,11 +38,12 @@ var svg = d3.select("#contentSVG")
             .on("click", onclick);
 var layer1 = svg.append('g');
 var layer2 = svg.append('g');
-var circles;
-var labels;
-var lines;
-var connLines;
-var edgeLabelCircles;
+var nodeCircles;
+var nodeLabels;
+var edgeLines;
+var connEdgeLines;
+var edgeCircles;
+var edgeLabels;
 
 var selectedNode = -1;
 
@@ -53,11 +54,11 @@ var labelTextField = document.getElementById("label");
 
 //Update the SVG given data
 function updateSVG() {   
-	//Create node circles
-	circles = layer2.selectAll("circle")
+	//Create node nodeCircles
+	nodeCircles = layer2.selectAll("circle")
 		.data(nodes);
 		
-	circles.enter()
+	nodeCircles.enter()
 		.append("circle")
 		.on("click", onclick)
 		.attr("class", "circle")
@@ -66,13 +67,13 @@ function updateSVG() {
 		})
 		.attr("r", circleRadius);
 		
-	circles.exit().remove();
+	nodeCircles.exit().remove();
 	
 	//Create text labels for circles
-	labels = layer2.selectAll("text")
+	nodeLabels = layer2.selectAll("text")
 		.data(nodes);
 		
-	labels.enter()
+	nodeLabels.enter()
 		.append("text")
 		.on("click", onclick)
 		.attr("class", "label")
@@ -83,13 +84,13 @@ function updateSVG() {
 			return "translate(" + (d.x*w-14) + "," + (d.y*h+3) + ")";
 		});
 		
-	labels.exit().remove();
+	nodeLabels.exit().remove();
 		
 	//Create edges (note: they are placed below circles)
-	lines = layer1.selectAll("line")
+	edgeLines = layer1.selectAll(".edge")
 		.data(edges);
     
-	lines.enter()
+	edgeLines.enter()
 		.append("line")
 		.attr("class", "edge")
 		.attr("marker-end", "url(#markerArrow)")
@@ -98,10 +99,24 @@ function updateSVG() {
 		.attr("x2", function(d) {return w*getNode(d.target).x})
 		.attr("y2", function(d) {return h*getNode(d.target).y});
 		
-	lines.exit().remove();	
+	edgeLines.exit().remove();	
 	
-	//Create connection edges
+	//Create connection edges (note: they are placed below circles)
+	connEdgeLines = layer1.selectAll(".conn_edge")
+		.data(connEdges);
+    
+	connEdgeLines.enter()
+		.append("line")
+		.attr("class", "conn_edge")
+		.attr("marker-end", "url(#markerArrow)")
+		.attr("x1", function(d) {return w*getNode(d.source).x})
+		.attr("y1", function(d) {return h*getNode(d.source).y})
+		.attr("x2", function(d) {return w*getNode(d.target).x})
+		.attr("y2", function(d) {return h*getNode(d.target).y});
+		
+	connEdgeLines.exit().remove();	
 	//Create edge label nodes
+	//Create edge labels
 }
 
 //Handle mouse click
@@ -154,6 +169,29 @@ function onclick(d, i) {
 			}
 			break;
 		case "conn_edge":
+			if (d != undefined && d.type == 0) {
+				//Clicked on the existing node
+				if (selectedNode == -1 || selectedNode == i) {
+					//Select/deselect
+					selectNode(i);
+				}
+				else {
+					//Create a new connection edge
+					//Note: double sided connection edges are not currently allowed
+					if (!edgeExists(selectedNode, i) && !edgeExists(i, selectedNode)) {
+						maxConnEdgeID += 1;
+						connEdges.push({
+							id: maxConnEdgeID,
+							text: "connEdge" + maxEdgeID,
+							source: selectedNode,
+							target: i,
+							type: 2
+						});
+						updateSVG();
+					}
+					selectNode(selectedNode);
+				}
+			}
 			break;
 		case "select":
 		default:
@@ -172,9 +210,9 @@ function onclick(d, i) {
 function selectNode(i) {
 	if (i == -1) 
 		return;
-	var circle = d3.select(circles[0][i]);
+	var circle = d3.select(nodeCircles[0][i]);
 	if (selectedNode != i) {
-		//deselect the previously selectedNode circle
+		//deselect the previously selected circle
 		if (selectedNode != -1)
 			selectNode(selectedNode);
 		//select

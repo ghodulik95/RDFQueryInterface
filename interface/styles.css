@@ -10,6 +10,11 @@
 	stroke: black;
 	stroke-width: 2;
 }
+.conn_edge {
+	stroke: black;
+	stroke-width: 2;
+	stroke-dasharray: 5,5;
+}
 .label {
 	font-size: 12px;
 	-webkit-touch-callout: none;
