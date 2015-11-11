@@ -25,6 +25,15 @@ var edgeTemplate = {
 	type: 1
 }
 
+var selectedNode = -1;
+
+//Get elements of the edit window
+var editFieldset = document.getElementById("editFieldset");
+
+//Get the label input text field
+var labelTextField = document.getElementById("labelInput");
+labelTextField.value = "";
+
 //Set default mode
 var mode;
 var defaultModeButton = document.getElementById("defaultModeButton");
@@ -49,15 +58,13 @@ var connEdgeLines;
 var edgeCircles;
 var edgeLabels;
 
-var selectedNode = -1;
-
 updateSVG();
 
-//Get the text field
-var labelTextField = document.getElementById("label");
-
 //Update the SVG given data
-function updateSVG() {   
+function updateSVG() {
+	console.log(nodes);
+	console.log(edges);
+	console.log(connEdges);  
 	//Deselect
 	selectNode(selectedNode);
 	//Create node nodeCircles
@@ -289,17 +296,80 @@ function selectNode(i) {
 		//select
 		circle.attr("class", "node_selected");
 		selectedNode = i;
+		if (mode=="select") {
+			labelTextField.value = nodes[i].text;
+		}
 	}
 	else {
 		//deselect
 		circle.attr("class", "node");
 		selectedNode = -1;
+		if (mode=="select") {
+			labelTextField.value = "";
+		}
 	}
+}
+
+//Save button clicked
+function clickedSave() {
+	if (mode != "select" || selectedNode == -1)
+		return;
+	var newText = labelTextField.value;
+	nodes[selectedNode].text = newText;
+	d3.select(nodeLabels[0][selectedNode]).text(newText);
+	selectNode(selectedNode);
+}
+
+//Delete button clicked
+function clickedDelete() {
+	if (mode != "select" || selectedNode == -1)
+		return;
+	var node = nodes[selectedNode];
+	var r = confirm("Are you sure you want to delete node " + node.text + " and all associated edges?");
+	if (r == false)
+		return;
+	//Delete all associated edges
+	for (var i=0; i<edges.length; i++) {
+		var currentEdge = edges[i];
+		if (currentEdge.source == node.id || currentEdge.target == node.id) {
+			edges.splice(i, 1);
+			i--;
+		}
+	}
+	//Delete all associated connection edges
+	for (var i=0; i<connEdges.length; i++) {
+		var currentEdge = connEdges[i];
+		if (currentEdge.source == node.id || currentEdge.target == node.id) {
+			connEdges.splice(i, 1);
+			i--;
+		}
+	}
+	//Delete the node
+	selectNode(selectedNode);
+	nodes.splice(selectedNode, 1);
+	//Redraw SVG completely
+	nodeLabels.remove();
+	nodeCircles.remove();
+	edgeLines.remove();
+	connEdgeLines.remove();
+	//edgeCircles.remove();
+	//edgeLabels.remove();
+	updateSVG();
 }
 
 //Change mode
 function changeMode(r) {
 	selectNode(selectedNode);
+	if (r.value == "select") {
+		editFieldset.disabled = false;
+		d3.selectAll(".edit_label_disabled").attr("class", "edit_label_enabled");
+		
+	}
+	else {
+		editFieldset.disabled = true;
+		d3.selectAll(".edit_label_enabled").attr("class", "edit_label_disabled");
+		labelTextField.value = "";
+	}
 	mode = r.value;
 }
 

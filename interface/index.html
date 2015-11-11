@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<div class="sidebar">
-			<fieldset>
+			<fieldset id="modeFieldset">
 				<legend>Mode</legend>
 				<form>
 					<input type="radio" name="mode" value="select" onclick="changeMode(this);" id="defaultModeButton">Select<br>
@@ -17,13 +17,13 @@
 					<input type="radio" name="mode" value="conn_edge" onclick="changeMode(this);">Connection Edge
 				</form>
 			</fieldset>
-			<fieldset>
-				<legend>Edit Selection</legend>
+			<fieldset id="editFieldset">
+				<legend><text class="edit_label_enabled">Edit Selection</text></legend>
 				<form>
-					Label:<br>
-					<input type="text" id="label" name="label"><br>
-					<input type="button" value="save"><br>
-					<input type="button" value="delete">
+					<text class="edit_label_enabled">Label:</text><br>
+					<input type="text" id="labelInput" name="label"><br>
+					<input type="button" value="save" onclick="clickedSave();"><br>
+					<input type="button" value="delete" onclick="clickedDelete();">
 				</form>
 			</fieldset>
 		</div>

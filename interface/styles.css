@@ -35,4 +35,9 @@
 	position: absolute;
 	left:200px; top:0; right:0; bottom:0;
 }
+.edit_label_enabled {
+}
+.edit_label_disabled {
+	color: gray;
+}
 
