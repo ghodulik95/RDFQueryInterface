@@ -30,12 +30,16 @@ var mode;
 var defaultModeButton = document.getElementById("defaultModeButton");
 defaultModeButton.checked = true;
 mode = defaultModeButton.value;
+
+//Create drag behavior
+var drag = d3.behavior.drag()
+	.on("drag", onDrag)
 	
 //Create svg
 var svg = d3.select("#contentSVG")
             .attr("width", w)   
             .attr("height", h)
-            .on("click", onclick);
+            .on("click", onClick);
 var layer1 = svg.append('g');
 var layer2 = svg.append('g');
 var nodeCircles;
@@ -62,7 +66,8 @@ function updateSVG() {
 		
 	nodeCircles.enter()
 		.append("circle")
-		.on("click", onclick)
+		.on("click", onClick)
+		.call(drag)
 		.attr("class", "node")
 		.attr("transform", function(d) {
 			return "translate(" + (d.x*w) + "," + (d.y*h) + ")";
@@ -77,7 +82,8 @@ function updateSVG() {
 		
 	nodeLabels.enter()
 		.append("text")
-		.on("click", onclick)
+		.on("click", onClick)
+		.call(drag)
 		.attr("class", "node_label")
 		.text(function(d) {
 			return d.text;
@@ -96,6 +102,7 @@ function updateSVG() {
 		.append("line")
 		.attr("class", "edge")
 		.attr("marker-end", "url(#markerArrow)")
+		.attr("data-edgeID", function(d) {return d.id})
 		.attr("x1", function(d) {return w*getNode(d.source).x})
 		.attr("y1", function(d) {return h*getNode(d.source).y})
 		.attr("x2", function(d) {return w*getNode(d.target).x})
@@ -111,6 +118,7 @@ function updateSVG() {
 		.append("line")
 		.attr("class", "conn_edge")
 		.attr("marker-end", "url(#markerArrow)")
+		.attr("data-connEdgeID", function(d) {return d.id})
 		.attr("x1", function(d) {return w*getNode(d.source).x})
 		.attr("y1", function(d) {return h*getNode(d.source).y})
 		.attr("x2", function(d) {return w*getNode(d.target).x})
@@ -124,7 +132,7 @@ function updateSVG() {
 //Handle mouse click
 //Note: if we click on a circle, then the function is called twice (from the circle & background)
 //Not sure how to check if there is an object at the coordinates
-function onclick(d, i) {
+function onClick(d, i) {
 	var coords = d3.mouse(this);
 	var x = coords[0];
 	var y = coords[1];
@@ -205,6 +213,67 @@ function onclick(d, i) {
 				}
 			}
 			break;
+	}
+}
+
+//Define drag behavior
+function onDrag(d,i) {
+	if (mode == "select") {
+		var x = d3.event.x;
+		var y = d3.event.y;
+		var node = nodes[i];
+		
+		//Don't move past the svg boundary			
+		if ((x+circleRadius)>w)
+			x = w-circleRadius-1;
+		if ((x-circleRadius)<0)
+			x = circleRadius+1;
+		if ((y+circleRadius)>h)
+			y = w-circleRadius-1;
+		if ((y-circleRadius)<0)
+			y = circleRadius+1;
+			
+		//Todo: prevent moving a node on top of another node
+		
+		//Move the node
+		node.x = x/w;
+		node.y = y/h;
+		d3.select(nodeCircles[0][i]).attr("transform", "translate(" + x + "," + y + ")");
+		d3.select(nodeLabels[0][i]).attr("transform", "translate(" + (x-14) + "," + (y+3) + ")");
+		
+		//Move all related edges
+		for (var i=0; i<edges.length; i++) {
+			var currentEdge = edges[i];
+			if (currentEdge.source == node.id) {
+				var dataEdgeID = "[data-edgeID=\"" + currentEdge.id + "\"]"
+				var line = d3.select(dataEdgeID);
+				line.attr("x1", x);
+				line.attr("y1", y);
+			}
+			else if (currentEdge.target == node.id) {
+				var dataEdgeID = "[data-edgeID=\"" + currentEdge.id + "\"]"
+				var line = d3.select(dataEdgeID);
+				line.attr("x2", x);
+				line.attr("y2", y);
+			}
+		}
+		
+		//Move all related connection edges
+		for (var i=0; i<connEdges.length; i++) {
+			var currentEdge = connEdges[i];
+			if (currentEdge.source == node.id) {
+				var dataEdgeID = "[data-connEdgeID=\"" + currentEdge.id + "\"]"
+				var line = d3.select(dataEdgeID);
+				line.attr("x1", x);
+				line.attr("y1", y);
+			}
+			else if (currentEdge.target == node.id) {
+				var dataEdgeID = "[data-connEdgeID=\"" + currentEdge.id + "\"]"
+				var line = d3.select(dataEdgeID);
+				line.attr("x2", x);
+				line.attr("y2", y);
+			}
+		}
 	}
 }
 
