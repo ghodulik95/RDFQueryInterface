@@ -137,6 +137,8 @@ function updateSVG() {
 //Note: if we click on a circle, then the function is called twice (from the circle & background)
 //Not sure how to check if there is an object at the coordinates
 function onClick(d, i) {
+	if (d3.event.defaultPrevented) 
+		return;
 	var coords = d3.mouse(this);
 	var x = coords[0];
 	var y = coords[1];
