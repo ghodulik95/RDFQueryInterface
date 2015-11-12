@@ -167,13 +167,15 @@ function onClick(d, i) {
 				else {
 					//Create a new edge
 					//Note: double sided edges are not currently allowed
-					if (!edgeExists(selectedNode, i) && !edgeExists(i, selectedNode)) {
+					var sourceID = nodes[selectedNode].id;
+					var targetID = nodes[i].id;
+					if (!edgeExists(sourceID, targetID) && !edgeExists(targetID, sourceID)) {
 						maxEdgeID += 1;
 						edges.push({
 							id: maxEdgeID,
 							text: "edge" + maxEdgeID,
-							source: nodes[selectedNode].id,
-							target: nodes[i].id,
+							source: sourceID,
+							target: targetID,
 							type: 1
 						});
 						updateSVG();
@@ -192,13 +194,15 @@ function onClick(d, i) {
 				else {
 					//Create a new connection edge
 					//Note: double sided connection edges are not currently allowed
-					if (!edgeExists(selectedNode, i) && !edgeExists(i, selectedNode)) {
+					var sourceID = nodes[selectedNode].id;
+					var targetID = nodes[i].id;
+					if (!edgeExists(sourceID, targetID) && !edgeExists(targetID, sourceID)) {
 						maxConnEdgeID += 1;
 						connEdges.push({
 							id: maxConnEdgeID,
 							text: "connEdge" + maxEdgeID,
-							source: nodes[selectedNode].id,
-							target: nodes[i].id,
+							source: sourceID,
+							target: targetID,
 							type: 2
 						});
 						updateSVG();
