@@ -62,9 +62,6 @@ updateSVG();
 
 //Update the SVG given data
 function updateSVG() {
-	console.log(nodes);
-	console.log(edges);
-	console.log(connEdges);  
 	//Deselect
 	selectNode(selectedNode);
 	//Create node nodeCircles
@@ -175,8 +172,8 @@ function onClick(d, i) {
 						edges.push({
 							id: maxEdgeID,
 							text: "edge" + maxEdgeID,
-							source: selectedNode,
-							target: i,
+							source: nodes[selectedNode].id,
+							target: nodes[i].id,
 							type: 1
 						});
 						updateSVG();
@@ -200,8 +197,8 @@ function onClick(d, i) {
 						connEdges.push({
 							id: maxConnEdgeID,
 							text: "connEdge" + maxEdgeID,
-							source: selectedNode,
-							target: i,
+							source: nodes[selectedNode].id,
+							target: nodes[i].id,
 							type: 2
 						});
 						updateSVG();
