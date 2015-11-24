@@ -13,3 +13,9 @@ function javascriptToJSON(nodes, edges, connEdges){
 	edgesJSON = edgesJSON.substring(0,edgesJSON.length - 1) + "]";
 	return "{ nodes: "+nodesJSON+", edges: "+edgesJSON+" }";
 }
+
+function JSONToResults(resultsJSON){
+	var resultsRoot = jQuery.parseJSON(resultsJSON);
+	var results = resultsRoot.results;
+	return results;
+}

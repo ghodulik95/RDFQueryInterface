@@ -396,3 +396,20 @@ function getNode(id) {
 	}
 	return false;
 }
+
+//Process results given object:
+// Array of results where
+//		each result = Array of nodes which have an id and value
+function processResults(results){
+	//Processing of results will go here
+	//Ie displaying results, potentially other things
+	//return getNodeLabel(results, 0, 0);
+}
+
+//Will get the value of the given node id in the resultNum-th result
+function getNodeLabel(results, resultNum, nodeId){
+	var result = results[resultNum];
+	return result["value"+nodeId];
+}
+
+

@@ -31,6 +31,9 @@
 			<div>
 				<button id="submitQuery">Submit Query</button>
 			</div>
+			<div id="loading">
+				Results are loading
+			</div>
 		</div>
 		<div class="content">
 			<svg id="contentSVG">
@@ -43,22 +46,34 @@
 		</div>
 		<script type="text/javascript" src="d3code.js"></script>
 		<script type="text/javascript">
+			$("#loading").hide();
+			$(document).ready(function () {
+				$(document).ajaxStart(function () {
+					$("#loading").show();
+				}).ajaxStop(function () {
+					$("#loading").hide();
+				});
+			});
+		
 			$("#submitQuery").click(function(){
-				var queryAsJSON = javascriptToJSON(nodes, edges, connEdges);
-				$("body").html("<!--"+queryAsJSON+"!--\>");
+				//TEST CODE -- real code is commented out below this line (note that this test code is copied from what was generated in the real code)
+				var queryAsJSON = "{ nodes: [{ id: 0, label: '<http://www.Department2.University1.edu/GraduateStudent*' },{ id: 1, label: '<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>' }], edges: [{ source: 0, target: 1, label: 'edge0' }] }";
+				//queryAsJSON = javascriptToJSON(nodes, edges, connEdges);
 				var dbname = 'LUBM';
 				$.ajax({
 					type: "POST",
-					url: "ajaxFunctions.php", //Relative or absolute path to response.php file
+					url: "ajaxFunctions.php",
 					data: {
 							action: 'Query',
 							query: queryAsJSON,
 							databaseName: dbname
 						  },
 					success: function(ret) {
-						processResults(ret);
+						results = JSONToResults(ret);
+						processResults(results);
 					}
-				}).done(function() {alert("done");})
+				})
+				.done(function() {alert("done");})
 				.fail(function(){ alert("fail");});
 			});
 		</script>
