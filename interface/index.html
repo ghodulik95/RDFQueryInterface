@@ -4,6 +4,8 @@
 		<meta charset="utf-8">
 		<title>D3 Test</title>
 		<link rel="stylesheet" type="text/css" href="styles.css">
+		<script src="./jquery_1.11.3.js"></script>
+		<script type="text/javascript" src="./convertFunctions.js"></script>
 		<script type="text/javascript" src="../d3/d3.v3.js"></script>
 	</head>
 	<body>
@@ -26,6 +28,9 @@
 					<input type="button" value="delete" onclick="clickedDelete();">
 				</form>
 			</fieldset>
+			<div>
+				<button id="submitQuery">Submit Query</button>
+			</div>
 		</div>
 		<div class="content">
 			<svg id="contentSVG">
@@ -37,5 +42,25 @@
 			</svg>
 		</div>
 		<script type="text/javascript" src="d3code.js"></script>
+		<script type="text/javascript">
+			$("#submitQuery").click(function(){
+				var queryAsJSON = javascriptToJSON(nodes, edges, connEdges);
+				$("body").html("<!--"+queryAsJSON+"!--\>");
+				var dbname = 'LUBM';
+				$.ajax({
+					type: "POST",
+					url: "ajaxFunctions.php", //Relative or absolute path to response.php file
+					data: {
+							action: 'Query',
+							query: queryAsJSON,
+							databaseName: dbname
+						  },
+					success: function(ret) {
+						processResults(ret);
+					}
+				}).done(function() {alert("done");})
+				.fail(function(){ alert("fail");});
+			});
+		</script>
 	</body>
 </html>
