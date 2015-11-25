@@ -5,8 +5,8 @@
 		switch($action) {
 			case 'GetEdges' : 
 			case 'GetSubjects' : 
-				if(isset($_POST['databaseName']) && isset($_POST['tableName'])){
-					getDBValues($action, $_POST['databaseName'], $_POST['tableName']);
+				if(isset($_POST['databaseName'])){
+					getDBValues($action, $_POST['databaseName'], $_POST['currentInput']);
 				}
 				break;
 			case 'Query':
@@ -20,18 +20,17 @@
 		}
 	}
 	
-	function getDBValues($action, $dbname, $tbname){
+	function getDBValues($action, $dbname, $currentInput){
 		require_once 'HTTP/Request2.php';
 
 		$request = new HTTP_Request2('http://localhost:8080/RDFQueryWebService/RDFQueryWebService.asmx/'.$action, HTTP_Request2::METHOD_POST);
 		$request->setHeader('Content-type: application/x-www-form-urlencoded');
-		$request->addPostParameter(array('databaseName' => $dbname, 'tableName' => $tbname));
+		$request->addPostParameter(array('databaseName' => $dbname, 'currentInput' => $currentInput));
 		try {
 			$response = $request->send();
 			if (200 == $response->getStatus()) {
 				$raw_body = $response->getBody();
-				//$body = simplexml_load_string($raw_body);
-				echo $raw_body;
+				$body = simplexml_load_string($raw_body);
 				if($body !== null){
 					echo $body;
 				}

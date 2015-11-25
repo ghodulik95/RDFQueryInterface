@@ -4,7 +4,10 @@
 		<meta charset="utf-8">
 		<title>D3 Test</title>
 		<link rel="stylesheet" type="text/css" href="styles.css">
-		<script src="./jquery_1.11.3.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script type="text/javascript" src="./constants.js"></script>
 		<script type="text/javascript" src="./convertFunctions.js"></script>
 		<script type="text/javascript" src="../d3/d3.v3.js"></script>
 	</head>
@@ -26,8 +29,12 @@
 					<input type="text" id="labelInput" name="label"><br>
 					<input type="button" value="save" onclick="clickedSave();"><br>
 					<input type="button" value="delete" onclick="clickedDelete();">
+					<input type="button" value="get labels" onclick="updateTags();">
 				</form>
 			</fieldset>
+			<div id="databases">
+				
+			</div>
 			<div>
 				<button id="submitQuery">Submit Query</button>
 			</div>
@@ -46,20 +53,37 @@
 		</div>
 		<script type="text/javascript" src="d3code.js"></script>
 		<script type="text/javascript">
-			$("#loading").hide();
-			$(document).ready(function () {
-				$(document).ajaxStart(function () {
-					$("#loading").show();
-				}).ajaxStop(function () {
-					$("#loading").hide();
+			//INITIALIZE
+			$(function(){
+				//Database dropdown
+				var select = $("<select />");
+				for(var val in databases){
+					 $('<option />', {value: val, text: databases[val]}).appendTo(select);
+				}
+				select.appendTo("#databases");
+				
+				//Loading div
+				$("#loading").hide();
+				$(document).ready(function () {
+					$(document).ajaxStart(function () {
+							$("#loading").show();
+						}).ajaxStop(function () {
+							$("#loading").hide();
+						});
 				});
+				
+				//Set up dropdown
+				$("#labelInput").autocomplete({
+					source:[]
+				});
+				updateTags();
 			});
-		
+				
 			$("#submitQuery").click(function(){
 				//TEST CODE -- real code is commented out below this line (note that this test code is copied from what was generated in the real code)
 				var queryAsJSON = "{ nodes: [{ id: 0, label: '<http://www.Department2.University1.edu/GraduateStudent*' },{ id: 1, label: '<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>' }], edges: [{ source: 0, target: 1, label: 'edge0' }] }";
 				//queryAsJSON = javascriptToJSON(nodes, edges, connEdges);
-				var dbname = 'LUBM';
+				var dbname = $("#databases option:selected").val();
 				$.ajax({
 					type: "POST",
 					url: "ajaxFunctions.php",
@@ -76,6 +100,28 @@
 				.done(function() {alert("done");})
 				.fail(function(){ alert("fail");});
 			});
+			
+			$("#getLabelsButton").click(function(){updateTags();});
+			
+			function updateTags(){
+				var db = $("#databases option:selected").val();
+				$.ajax({
+					type: "POST",
+					url: "ajaxFunctions.php",
+					data: {
+							action: 'GetSubjects',
+							databaseName: db,
+							currentInput: $("#labelInput").val()
+						  },
+					success: function(ret) {
+						var tagsRoot = jQuery.parseJSON(ret);
+						var tags = tagsRoot.subjects;
+						$('#labelInput').autocomplete("option", { source: tags });
+						$('#labelInput').focus();
+					}
+				});
+			}
+			
 		</script>
 	</body>
 </html>

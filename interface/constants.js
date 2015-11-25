@@ -1,0 +1,1 @@
+var databases = {"LUBM":"LUMB","uniprot":"Uniprot"};
