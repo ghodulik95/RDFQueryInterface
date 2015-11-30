@@ -79,7 +79,7 @@
 				});
 				updateTags();
 			});
-				
+			var testResult;
 			$("#submitQuery").click(function(){
 				//TEST CODE -- real code is commented out below this line (note that this test code is copied from what was generated in the real code)
 				var queryAsJSON = "{ nodes: [{ id: 0, label: '<http://www.Department2.University1.edu/GraduateStudent*' },{ id: 1, label: '<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>' }], edges: [{ source: 0, target: 1, label: 'edge0' }] }";
@@ -87,7 +87,7 @@
 				var dbname = $("#databases option:selected").val();
 				//Test code
 				var testResultString = "{\"results\": [{\"0\":\"<http://www.Department2.University1.edu/GraduateStudent01/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"0\":\"<http://www.Department2.University1.edu/GraduateStudent02/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"0\":\"<http://www.Department2.University1.edu/GraduateStudent03/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}]}";
-				var testResult = JSONToResults(testResultString);
+				testResult = JSONToResults(testResultString);
 				console.log(testResult);
 				//alert(getNodeLabel(testResult, 0, 0));
 				//processResults(testResult);
@@ -153,12 +153,6 @@
 				nodes[i].y = i * 80;
 				nodes[i].type = 0;
 			}
-		}
-
-		//Will get the value of the given node id in the resultNum-th result
-		function getNodeLabel(results, resultNum, nodeId){
-			var result = results[resultNum];
-			return result["value"+nodeId];
 		}
 			
 		</script>
