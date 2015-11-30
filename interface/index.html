@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class="sidebar">
-			<p>Query Interface Demo</p>
+			<h1>----Query Interface Demo----</h1>
 			<fieldset id="modeFieldset">
 				<legend>Mode</legend>
 				<form>
@@ -90,7 +90,7 @@
 				testResult = JSONToResults(testResultString);
 				console.log(testResult);
 				//alert(getNodeLabel(testResult, 0, 0));
-				//processResults(testResult);
+				processResults(testResult);
 				/*
 				REAL CODE
 				$.ajax({
@@ -145,13 +145,12 @@
 			//Processing of results will go here
 			//Ie displaying results, potentially other things
 			//return getNodeLabel(results, 0, 0);
-			for (var i = 0; i < results.length; i++){
-				console.log(results[i]);
-				nodes[i].id = results.id;
-				nodes[i].text = results.value;
-				nodes[i].x = i * 50;
-				nodes[i].y = i * 80;
-				nodes[i].type = 0;
+			console.log("Processing");
+			var row = results[0];
+			for (var i = 0; i < nodes.length; i++){
+				newText = row[nodes[i].id]
+				nodes[i].text = newText;
+				d3.select(nodeLabels[0][nodes[i].id]).text(newText);
 			}
 		}
 			
