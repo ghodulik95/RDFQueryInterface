@@ -1,22 +1,67 @@
+html *{
+	font-family: sans-serif;
+	font-size: 11px;
+}
+
+svg {
+	background-color: white;
+	border: solid;
+	border-color: lightslategray;
+	border-width: thin;
+}
+
+fieldset {
+	background-color: #d4eaff;
+}
+
 .node {
-	fill: #FFF380;
-	stroke: orange;
+	stroke: #bae0ff;
+	fill: #ebeeff;
+	fill-opacity:0.5;
 }
+
+.node:hover {
+	stroke: #bae0ff;
+	fill: #bbe3c5;
+	fill-opacity:0.5;
+}
+
+.edge_circle {
+	fill: #ffffff;
+	fill-opacity:0.2;
+	stroke: #bbe3c5;
+}
+
+.edge_circle_selected {
+	fill: #daf9e8;
+	fill-opacity:0.8;
+	stroke: #bbe3c5;
+}
+
+.edge_circle:hover {
+	fill: #bbe3c5;
+	fill-opacity:0.5;
+	stroke: #bbe3c5;
+}
+
 .node_selected {
-	fill: #CDC14E;
-	stroke: orange;
+	fill: #f9deae;
+	fill-opacity:0.8;
+	stroke: #bae0ff;
 }
+
 .edge {
-	stroke: black;
+	stroke: gray;
 	stroke-width: 2;
 }
 .conn_edge {
-	stroke: black;
+	stroke: gray;
 	stroke-width: 2;
 	stroke-dasharray: 5,5;
 }
 .node_label {
 	font-size: 12px;
+	font-family: sans-serif;
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -25,11 +70,24 @@
     user-select: none;
     cursor:default;
 }
+.edge_label {
+	background-color: #0a304e;
+	color: white;
+	font-size: 12px;
+	font-family: sans-serif;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor:default;
+}
 .sidebar {
 	position:absolute;
 	left:0; top:0; bottom: 0;
 	width: 200px;
-	background-color: #E5E4E2;
+	background-color: #d4eaff;
 }
 .content {
 	position: absolute;
