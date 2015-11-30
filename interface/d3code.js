@@ -555,6 +555,14 @@ function processResults(results){
 	//Processing of results will go here
 	//Ie displaying results, potentially other things
 	//return getNodeLabel(results, 0, 0);
+	for (var i = 0; i < results.length; i++){
+		console.log(results[i]);
+		nodes[i].id = results.id;
+		nodes[i].text = results.value;
+		nodes[i].x = i * 50;
+		nodes[i].y = i * 80;
+		nodes[i].type = 0;
+	}
 }
 
 //Will get the value of the given node id in the resultNum-th result

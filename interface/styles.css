@@ -18,42 +18,54 @@ fieldset {
 	stroke: #bae0ff;
 	fill: #ebeeff;
 	fill-opacity:0.8;
+	stroke-width: 1.5;
 }
 
 .node:hover {
 	stroke: #bae0ff;
 	fill: #bbe3c5;
 	fill-opacity:0.5;
+	stroke-width: 2;
 }
 
 .edge_circle {
 	fill: #ffffff;
 	fill-opacity:0.2;
 	stroke: #bbe3c5;
+	stroke-width: 1.5;
 }
 
 .edge_circle_selected {
 	fill: #daf9e8;
 	fill-opacity:0.8;
 	stroke: #bbe3c5;
+	stroke-width: 2.5;
 }
 
 .edge_circle:hover {
 	fill: #bbe3c5;
 	fill-opacity:0.5;
 	stroke: #bbe3c5;
+	stroke-width: 2;
 }
 
 .node_selected {
 	fill: #f9f8c3;
 	fill-opacity:0.8;
 	stroke: #bae0ff;
+	stroke-width: 2.5;
 }
 
 .edge {
 	stroke: gray;
 	stroke-width: 2;
 }
+
+.edge_selected{
+	stroke:bbe3c5 ;
+	stroke-width: 3;
+}
+
 .conn_edge {
 	stroke: gray;
 	stroke-width: 2;
@@ -72,7 +84,6 @@ fieldset {
 }
 .edge_label {
 	background-color: #0a304e;
-	color: white;
 	font-size: 12px;
 	font-family: sans-serif;
 	-webkit-touch-callout: none;
