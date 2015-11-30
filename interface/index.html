@@ -4,9 +4,9 @@
 		<meta charset="utf-8">
 		<title>D3 Test</title>
 		<link rel="stylesheet" type="text/css" href="styles.css">
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 		<script type="text/javascript" src="./constants.js"></script>
 		<script type="text/javascript" src="./convertFunctions.js"></script>
 		<script type="text/javascript" src="../d3/d3.v3.js"></script>
@@ -84,6 +84,13 @@
 				var queryAsJSON = "{ nodes: [{ id: 0, label: '<http://www.Department2.University1.edu/GraduateStudent*' },{ id: 1, label: '<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>' }], edges: [{ source: 0, target: 1, label: 'edge0' }] }";
 				//queryAsJSON = javascriptToJSON(nodes, edges, connEdges);
 				var dbname = $("#databases option:selected").val();
+				//Test code
+				var testResultString = "{\"results\": [{\"value0\":\"<http://www.Department2.University1.edu/GraduateStudent01/>\",\"value1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"value0\":\"<http://www.Department2.University1.edu/GraduateStudent02/>\",\"value1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"value0\":\"<http://www.Department2.University1.edu/GraduateStudent03/>\",\"value1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}]}";
+				var testResult = JSONToResults(testResultString);
+				//alert(getNodeLabel(testResult, 0, 0));
+				processResults(testResult);
+				/*
+				REAL CODE
 				$.ajax({
 					type: "POST",
 					url: "ajaxFunctions.php",
@@ -99,12 +106,18 @@
 				})
 				.done(function() {alert("done");})
 				.fail(function(){ alert("fail");});
+				*/
 			});
 			
 			$("#getLabelsButton").click(function(){updateTags();});
 			
 			function updateTags(){
-				var db = $("#databases option:selected").val();
+				//Test data:
+				var tags = ["<http://www.Department2.University1.edu/GraduateStudent01/>","<http://www.Department2.University1.edu/GraduateStudent02/>","<http://www.Department2.University1.edu/GraduateStudent03/>"];
+				$('#labelInput').autocomplete("option", { source: tags });
+				$('#labelInput').focus();
+				//Comment out when not connected to server
+				/*var db = $("#databases option:selected").val();
 				$.ajax({
 					type: "POST",
 					url: "ajaxFunctions.php",
@@ -119,7 +132,7 @@
 						$('#labelInput').autocomplete("option", { source: tags });
 						$('#labelInput').focus();
 					}
-				});
+				});*/
 			}
 			
 		</script>
