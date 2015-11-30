@@ -1,1 +1,1 @@
-var databases = {"LUBM":"LUMB","uniprot":"Uniprot"};
+var databases = {"LUBM":"LUBM","uniprot":"Uniprot"};

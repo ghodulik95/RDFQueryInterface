@@ -86,10 +86,11 @@
 				//queryAsJSON = javascriptToJSON(nodes, edges, connEdges);
 				var dbname = $("#databases option:selected").val();
 				//Test code
-				var testResultString = "{\"results\": [{\"value0\":\"<http://www.Department2.University1.edu/GraduateStudent01/>\",\"value1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"value0\":\"<http://www.Department2.University1.edu/GraduateStudent02/>\",\"value1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"value0\":\"<http://www.Department2.University1.edu/GraduateStudent03/>\",\"value1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}]}";
+				var testResultString = "{\"results\": [{\"0\":\"<http://www.Department2.University1.edu/GraduateStudent01/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"0\":\"<http://www.Department2.University1.edu/GraduateStudent02/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"0\":\"<http://www.Department2.University1.edu/GraduateStudent03/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}]}";
 				var testResult = JSONToResults(testResultString);
+				console.log(testResult);
 				//alert(getNodeLabel(testResult, 0, 0));
-				processResults(testResult);
+				//processResults(testResult);
 				/*
 				REAL CODE
 				$.ajax({
@@ -135,6 +136,30 @@
 					}
 				});*/
 			}
+			
+			
+		//Process results given object:
+		// Array of results where
+		//		each result = Array of nodes which have an id and value
+		function processResults(results){
+			//Processing of results will go here
+			//Ie displaying results, potentially other things
+			//return getNodeLabel(results, 0, 0);
+			for (var i = 0; i < results.length; i++){
+				console.log(results[i]);
+				nodes[i].id = results.id;
+				nodes[i].text = results.value;
+				nodes[i].x = i * 50;
+				nodes[i].y = i * 80;
+				nodes[i].type = 0;
+			}
+		}
+
+		//Will get the value of the given node id in the resultNum-th result
+		function getNodeLabel(results, resultNum, nodeId){
+			var result = results[resultNum];
+			return result["value"+nodeId];
+		}
 			
 		</script>
 	</body>
