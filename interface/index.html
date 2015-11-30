@@ -54,6 +54,7 @@
 		</div>
 		<script type="text/javascript" src="d3code.js"></script>
 		<script type="text/javascript">
+
 			//INITIALIZE
 			$(function(){
 				//Database dropdown
@@ -142,11 +143,18 @@
 		// Array of results where
 		//		each result = Array of nodes which have an id and value
 		function processResults(results){
+
 			//Processing of results will go here
 			//Ie displaying results, potentially other things
 			//return getNodeLabel(results, 0, 0);
 			console.log("Processing");
-			var row = results[0];
+			if (mode == "result"){
+				a = (a+1)%(results.length);
+			}else{
+				a = 0;
+			}
+			mode = "result";
+			var row = results[a];
 			for (var i = 0; i < nodes.length; i++){
 				newText = row[nodes[i].id]
 				nodes[i].text = newText;

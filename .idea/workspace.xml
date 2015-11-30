@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/interface/d3code.js" line="350" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/interface/d3code.js" line="353" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="315684f7-3169-4017-ac46-0f198d4c1fd2" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/interface/d3code.js" afterPath="$PROJECT_DIR$/interface/d3code.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/interface/index.html" afterPath="$PROJECT_DIR$/interface/index.html" />
     </list>
     <ignored path="RDFQueryInterface.iws" />
@@ -26,21 +27,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="d3code.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="d3code.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/interface/d3code.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="427" column="61" selection-start-line="427" selection-start-column="8" selection-end-line="427" selection-end-column="61" />
+            <state vertical-scroll-proportion="0.55181026">
+              <caret line="64" column="6" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="6" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/interface/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31520396">
-              <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+            <state vertical-scroll-proportion="-6.2065215">
+              <caret line="153" column="22" selection-start-line="153" selection-start-column="22" selection-end-line="153" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -85,8 +86,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/interface/styles.css" />
-        <option value="$PROJECT_DIR$/interface/d3code.js" />
         <option value="$PROJECT_DIR$/interface/index.html" />
+        <option value="$PROJECT_DIR$/interface/d3code.js" />
       </list>
     </option>
   </component>
@@ -389,18 +390,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/interface/d3code.js">
+    <entry file="file://$PROJECT_DIR$/interface/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="427" column="61" selection-start-line="427" selection-start-column="8" selection-end-line="427" selection-end-column="61" />
+        <state vertical-scroll-proportion="-6.2065215">
+          <caret line="153" column="22" selection-start-line="153" selection-start-column="22" selection-end-line="153" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/interface/index.html">
+    <entry file="file://$PROJECT_DIR$/interface/d3code.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31520396">
-          <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.55181026">
+          <caret line="64" column="6" selection-start-line="64" selection-start-column="6" selection-end-line="64" selection-end-column="6" />
           <folding />
         </state>
       </provider>

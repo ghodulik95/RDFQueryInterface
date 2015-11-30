@@ -19,6 +19,7 @@ var nodeTemplate = {
 	y: 0,
 	type: 0
 }
+
 var edgeTemplate = {
 	id: -1,
 	text: "",
@@ -61,6 +62,7 @@ var nodeLabels;
 var edgeLines;
 var connEdgeLines;
 var edgeCircles;
+var a;
 //var edgeLabels;
 
 updateSVG();
@@ -263,6 +265,7 @@ function onClick(d, i) {
 			break;
 		case "select":
 		default:
+			mode = "select";
 			if (d != undefined) {
 				//Clicked on an existing object
 				if (d.type == 0) {
@@ -294,7 +297,7 @@ function onDrag(d,i) {
 		if ((x-circleRadius)<0)
 			x = circleRadius+1;
 		if ((y+circleRadius)>h)
-			y = w-circleRadius-1;
+			y = h-circleRadius-1;
 		if ((y-circleRadius)<0)
 			y = circleRadius+1;
 			
@@ -487,6 +490,8 @@ function clickedDelete() {
 		edgeCircles.remove();
 		edgeLabels.remove();
 		updateSVG();
+		selectedType = -1;
+		selectedNode = -1;
 	}
 
 }
