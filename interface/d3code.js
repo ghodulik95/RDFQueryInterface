@@ -63,6 +63,7 @@ var edgeLines;
 var connEdgeLines;
 var edgeCircles;
 var a;
+var regularMode;
 //var edgeLabels;
 
 updateSVG();
@@ -192,7 +193,10 @@ function onClick(d, i) {
 	var coords = d3.mouse(this);
 	var x = coords[0];
 	var y = coords[1];
-	
+
+    if (mode == "result")
+		mode = regularMode;
+
 	//console.log("this is not an object");
 	switch(mode) {
 		case "node":
@@ -265,7 +269,6 @@ function onClick(d, i) {
 			break;
 		case "select":
 		default:
-			mode = "select";
 			if (d != undefined) {
 				//Clicked on an existing object
 				if (d.type == 0) {

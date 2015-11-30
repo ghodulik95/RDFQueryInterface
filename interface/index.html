@@ -151,9 +151,11 @@
 			if (mode == "result"){
 				a = (a+1)%(results.length);
 			}else{
+				//save the current mode
+				regularMode = mode;
 				a = 0;
+				mode = "result";
 			}
-			mode = "result";
 			var row = results[a];
 			for (var i = 0; i < nodes.length; i++){
 				newText = row[nodes[i].id]
