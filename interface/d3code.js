@@ -283,7 +283,7 @@ function onClick(d, i) {
 
 //Define drag behavior
 function onDrag(d,i) {
-	if ((mode == "select") && (selectedType == 0)){
+	if ((mode == "select") && (selectedType == 0) && (d.type != 1)){
 		var x = d3.event.x;
 		var y = d3.event.y;
 		var node = nodes[i];
@@ -493,7 +493,10 @@ function clickedDelete() {
 
 //Change mode
 function changeMode(r) {
-	selectNode(selectedNode);
+	if (selectedType == 0)
+		selectNode(selectedNode);
+	if (selectedType == 1)
+		selectEdge(selectedNode);
 	if (r.value == "select") {
 		editFieldset.disabled = false;
 		d3.selectAll(".edit_label_disabled").attr("class", "edit_label_enabled");
