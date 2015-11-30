@@ -149,14 +149,14 @@
 			//return getNodeLabel(results, 0, 0);
 			console.log("Processing");
 			if (mode == "result"){
-				a = (a+1)%(results.length);
+				resultIndex = (resultIndex+1)%(results.length);
 			}else{
 				//save the current mode
 				regularMode = mode;
-				a = 0;
+				resultIndex = 0;
 				mode = "result";
 			}
-			var row = results[a];
+			var row = results[resultIndex];
 			for (var i = 0; i < nodes.length; i++){
 				newText = row[nodes[i].id]
 				nodes[i].text = newText;
