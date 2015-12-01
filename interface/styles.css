@@ -1,112 +1,149 @@
-html *{
-	font-family: sans-serif;
-	font-size: 11px;
+html * {
+    font-family: sans-serif;
+    font-size: 11px;
 }
 
 svg {
-	background-color: white;
-	border: solid;
-	border-color: lightslategray;
-	border-width: thin;
+    background-color: white;
+    border: solid;
+    border-color: lightslategray;
+    border-width: thin;
 }
 
 fieldset {
-	background-color: #d4eaff;
+    background-color: #d4eaff;
 }
 
 .node {
-	stroke: #bae0ff;
-	fill: #ebeeff;
-	fill-opacity:0.8;
-	stroke-width: 1.5;
+    stroke: #bae0ff;
+    fill: #ebeeff;
+    fill-opacity: 0.8;
+    stroke-width: 1.5;
 }
 
 .node:hover {
-	stroke: #bae0ff;
-	fill: #bbe3c5;
-	fill-opacity:0.5;
-	stroke-width: 2;
+    stroke: #bae0ff;
+    fill: rgba(232, 233, 233, 0.79);
+    fill-opacity: 0.5;
+    stroke-width: 2;
 }
 
 .edge_circle {
-	fill: #ffffff;
-	fill-opacity:0.2;
-	stroke: #bbe3c5;
-	stroke-width: 1.5;
+    fill: #ffffff;
+    fill-opacity: 0.2;
+    stroke: #bbe3c5;
+    stroke-width: 1.5;
 }
 
 .edge_circle_selected {
-	fill: #daf9e8;
-	fill-opacity:0.8;
-	stroke: #bbe3c5;
-	stroke-width: 2.5;
+    fill: #daf9e8;
+    fill-opacity: 0.8;
+    stroke: #bbe3c5;
+    stroke-width: 2.5;
 }
 
 .edge_circle:hover {
-	fill: #bbe3c5;
-	fill-opacity:0.5;
-	stroke: #bbe3c5;
-	stroke-width: 2;
+    fill: #bbe3c5;
+    fill-opacity: 0.5;
+    stroke: #bbe3c5;
+    stroke-width: 2;
+}
+
+.conn_circle {
+    fill: #ffffff;
+    fill-opacity: 0.2;
+    stroke: #bbe3c5;
+    stroke-dasharray: 4;
+    stroke-width: 1.5;
+}
+
+.conn_circle_selected {
+    fill: #daf9e8;
+    fill-opacity: 0.8;
+    stroke: #bbe3c5;
+    stroke-dasharray: 4;
+    stroke-width: 2.5;
+}
+
+.conn_circle:hover {
+    fill: #bbe3c5;
+    fill-opacity: 0.5;
+    stroke: #bbe3c5;
+    stroke-dasharray: 4;
+    stroke-width: 2;
 }
 
 .node_selected {
-	fill: #f9f8c3;
-	fill-opacity:0.8;
-	stroke: #bae0ff;
-	stroke-width: 2.5;
+    fill: #f9f8c3;
+    fill-opacity: 0.8;
+    stroke: #bae0ff;
+    stroke-width: 2.5;
 }
 
 .edge {
-	stroke: gray;
-	stroke-width: 2;
+    stroke: gray;
+    stroke-width: 2;
 }
 
-.edge_selected{
-	stroke:bbe3c5 ;
-	stroke-width: 3;
+.edge_selected {
+    stroke: bbe3c5;
+    stroke-width: 3;
 }
 
 .conn_edge {
-	stroke: gray;
-	stroke-width: 2;
-	stroke-dasharray: 5,5;
+    stroke: gray;
+    stroke-width: 2;
+    stroke-dasharray: 5, 5;
 }
+
 .node_label {
-	font-size: 12px;
-	font-family: sans-serif;
-	-webkit-touch-callout: none;
+    font-size: 12px;
+    font-family: sans-serif;
+    -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    cursor:default;
+    cursor: default;
+    pointer-events: none;
 }
+
 .edge_label {
-	background-color: #0a304e;
-	font-size: 12px;
-	font-family: sans-serif;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	cursor:default;
+    background-color: #0a304e;
+    font-size: 12px;
+    font-family: sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    pointer-events: none;
 }
+
 .sidebar {
-	position:absolute;
-	left:0; top:0; bottom: 0;
-	width: 200px;
-	background-color: #d4eaff;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    background-color: #d4eaff;
 }
+
 .content {
-	position: absolute;
-	left:200px; top:0; right:0; bottom:0;
+    position: absolute;
+    left: 200px;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
+
 .edit_label_enabled {
 }
+
 .edit_label_disabled {
-	color: gray;
+    color: gray;
 }
 

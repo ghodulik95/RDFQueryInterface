@@ -60,12 +60,15 @@ var svg = d3.select("#contentSVG")
 var layer1 = svg.append('g');
 var layer2 = svg.append('g');
 var layer3 = svg.append('g');
+var layer4 = svg.append('g');
 var nodeCircles;
 var nodeLabels;
 var edgeLines;
 var connEdgeLines;
 var edgeCircles;
 var edgeLabels;
+var connCircles;
+var connLabels;
 
 var resultIndex;
 var regularMode;
@@ -75,10 +78,9 @@ updateSVG();
 //Update the SVG given data
 function updateSVG() {
     //Deselect
-    if (selectedEntityType == 0)
-        selectNode(selectedEntity);
-    else
-        selectEdge(selectedEntity);
+    deselectEntity();
+
+
 
     //Create node nodeCircles
     nodeCircles = layer2.selectAll(".node")
@@ -210,6 +212,47 @@ function updateSVG() {
 
     edgeLabels.exit().remove();
 
+    //Create path circles
+    layer4.selectAll(".conn_circle").remove();
+    connCircles = layer4.selectAll(".conn_circle")
+        .data(connEdges);
+
+    connCircles.enter()
+        .append("circle")
+        .call(drag)
+        .on("click", onClick)
+        .attr("pathID", function (d) {
+            return d.id
+        })
+        .attr("class", "conn_circle")
+        .attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")"
+        })
+        .attr("r", circleRadius * 0.75);
+
+    connCircles.exit().remove();
+
+    //Create path label
+    layer4.selectAll(".conn_label").remove();
+    connLabels = layer4.selectAll(".conn_label")
+        .data(connEdges);
+
+    connLabels.enter()
+        .append("text")
+        .call(drag)
+        .on("click", onClick)
+        .attr("class", "conn_label")
+        .text(function (d) {
+            return d.text
+        })
+        .attr("pathID", function (d) {
+            return d.id
+        })
+        .attr("transform", function (d) {
+            return "translate(" + d.x + "," + d.y + ")"
+        });
+    connLabels.exit().remove();
+
 
 }
 
@@ -217,7 +260,7 @@ function updateSVG() {
 //Note: if we click on a circle, then the function is called twice (from the circle & background)
 //Not sure how to check if there is an object at the coordinates
 function onClick(d, i) {
-    console.log(i);
+    console.log(d);
     if (d3.event.defaultPrevented)
         return;
     var coords = d3.mouse(this);
@@ -304,13 +347,18 @@ function onClick(d, i) {
                 //Clicked on an existing object
                 if (d.type == 0) {
                     //Select/deselect the node
-                    selectNode(d.id);
-                    console.log("Node clicked");
+                    selectNode(i);
+                    console.log("Node clicked" + i);
                 }
                 if (d.type == 1) {
                     //Select/deselect the edge
-                    selectEdge(d.id);
+                    selectEdge(i);
                     console.log("Edge clicked");
+                }
+                if (d.type == 2) {
+                    //Select/deselect the edge
+                    selectPath(i);
+                    console.log("Path clicked");
                 }
                 console.log(d);
             }
@@ -321,7 +369,7 @@ function onClick(d, i) {
 //Define drag behavior
 function onDrag(d, i) {
     //if we are selecting, and the action is coming from a node
-    if ((mode == "select") && (d.type == 0)) {
+    if (((mode == "select") || (mode != "select")) && (d.type == 0)) {
         var x = d3.event.x;
         var y = d3.event.y;
         var node = nodes[i];
@@ -360,7 +408,6 @@ function onDrag(d, i) {
                 line.attr("x2", x);
                 line.attr("y2", y);
             }
-            updateEdgeLocation();
         }
 
         //Move all related connection edges
@@ -379,34 +426,35 @@ function onDrag(d, i) {
                 line.attr("y2", y);
             }
         }
+
+        updateEdgeLocation();
         updateSVG();
     }
 }
 
 //Select circle i if not selected, deselect otherwise
-function selectNode(nodeID) {
+function selectNode(i) {
     //deselect other entities
     if (selectedEntityType != 0) {
         deselectEntity();
         selectedEntityType = 0;
     }
 
-    if (selectedEntity != nodeID) {
+    if (selectedEntity != i) {
         //deselect the previously selected circle
         if (selectedEntity != -1)
-            deselectEntity();
-        selectedEntityType = 0;
-        selectedEntity = nodeID;
-        selectNodeUIUpdate(nodeID);
+            deselectNode();
+        selectedEntity = i;
+        selectNodeUIUpdate(i);
         editFieldset.disabled = false;
     }
     else {
-        deselectEntity();
+        deselectNode();
     }
 }
 
 //Select edge label i if not selected, deselect otherwise
-function selectEdge(edgeID) {
+function selectEdge(i) {
     //deselect other entities
     if (selectedEntityType != 1) {
         deselectEntity();
@@ -414,34 +462,65 @@ function selectEdge(edgeID) {
     }
 
     //if we select the same, just cancel, else also
-    if (selectedEntity != edgeID) {
+    if (selectedEntity != i) {
         //deselect the previously selected circle
         if (selectedEntity != -1)
-            deselectEntity();
-        selectedEntityType = 1;
-        selectedEntity = edgeID;
-        selectEdgeUIUpdate(edgeID);
+            deselectEdge();
+        selectedEntity = i;
+        selectEdgeUIUpdate(i);
         editFieldset.disabled = false;
     }
     else {
-        deselectEntity();
+        deselectEdge();
     }
 }
 
-function selectNodeUIUpdate(nodeID){
+
+
+function selectNodeUIUpdate(i){
     //select the new node
-    var circle = d3.select(nodeCircles[0][nodeID]);
+    var circle = d3.select(nodeCircles[0][i]);
     circle.attr("class", "node_selected");
     if (mode == "select") {
-        labelTextField.value = nodes[nodeID].text;
+        labelTextField.value = nodes[i].text;
     }
 }
 
-function selectEdgeUIUpdate(edgeID){
-    var circle = d3.select(edgeCircles[0][edgeID]);
+function selectEdgeUIUpdate(i){
+    var circle = d3.select(edgeCircles[0][i]);
     circle.attr("class", "edge_circle_selected");
     if (mode == "select") {
-        labelTextField.value = edges[edgeID].text;
+        labelTextField.value = edges[i].text;
+    }
+}
+
+//Select Path label i if not selected, deselect otherwise
+function selectPath(i) {
+    //deselect other entities
+    if (selectedEntityType != 2) {
+        deselectEntity();
+        selectedEntityType = 2;
+    }
+
+    //if we select the same, just cancel, else also
+    if (selectedEntity != i) {
+        //deselect the previously selected circle
+        if (selectedEntity != -1)
+            deselectPath();
+        selectedEntity = i;
+        selectPathUIUpdate(i);
+        editFieldset.disabled = false;
+    }
+    else {
+        deselectPath();
+    }
+}
+
+function selectPathUIUpdate(i){
+    var circle = d3.select(connCircles[0][i]);
+    circle.attr("class", "conn_circle_selected");
+    if (mode == "select") {
+        labelTextField.value = connEdges[i].text;
     }
 }
 
@@ -456,12 +535,16 @@ function deselectEntity(){
         return;
     }
 
-    if (selectedEntityType == 1) {
-        deselectEdgeUIUpdate();
+    if (selectedEntityType == 0) {
+        deselectNode();
     }
 
-    if (selectedEntityType == 0) {
-        deselectNodeUIUpdate();
+    if (selectedEntityType == 1) {
+        deselectEdge();
+    }
+
+    if (selectedEntityType == 2) {
+        deselectPath();
     }
 
     selectedEntity = -1;
@@ -472,8 +555,9 @@ function isSelectIdle(){
     return ((selectedEntityType == -1) || (selectedEntity == -1));
 }
 
-function deselectNodeUIUpdate(){
+function deselectNode(){
     var circle = d3.select(nodeCircles[0][selectedEntity]);
+    selectedEntity = -1;
     //deselect node
     circle.attr("class", "node");
     if (mode == "select") {
@@ -481,10 +565,21 @@ function deselectNodeUIUpdate(){
     }
 }
 
-function deselectEdgeUIUpdate(){
+function deselectEdge(){
     var circle = d3.select(edgeCircles[0][selectedEntity]);
+    selectedEntity = -1;
     //deselect edge
     circle.attr("class", "edge_circle");
+    if (mode == "select") {
+        labelTextField.value = "";
+    }
+}
+
+function deselectPath(){
+    var circle = d3.select(connCircles[0][selectedEntity]);
+    selectedEntity = -1;
+    //deselect Path
+    circle.attr("class", "conn_circle");
     if (mode == "select") {
         labelTextField.value = "";
     }
@@ -601,6 +696,15 @@ function getNode(id) {
     return false;
 }
 
+function getNodeLocation(id) {
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        if (node.id == id)
+            return i;
+    }
+    return false;
+}
+
 function getEdge(edgeID) {
     for (var i = 0; i < edges.length; i++) {
         var edge = edges[i];
@@ -610,9 +714,24 @@ function getEdge(edgeID) {
     return false;
 }
 
+function getEdgeLocation(edgeID) {
+    for (var i = 0; i < edges.length; i++) {
+        var edge = edges[i];
+        if (edge.id == edgeID)
+            return i;
+    }
+    return false;
+}
+
 function updateEdgeLocation() {
     for (var i = 0; i < edges.length; i++) {
         var d = edges[i];
+        d.x = (w * getNode(d.source).x / 2 + w * getNode(d.target).x / 2);
+        d.y = (h * getNode(d.source).y / 2 + h * getNode(d.target).y / 2);
+    }
+
+    for (var i = 0; i < connEdges.length; i++) {
+        var d = connEdges[i];
         d.x = (w * getNode(d.source).x / 2 + w * getNode(d.target).x / 2);
         d.y = (h * getNode(d.source).y / 2 + h * getNode(d.target).y / 2);
     }
