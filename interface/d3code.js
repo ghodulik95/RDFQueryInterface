@@ -25,6 +25,29 @@ var connEdges = [];
 var maxNodeID = -1;
 var maxEdgeID = -1;
 var maxConnEdgeID = -1;
+
+function getQueryAsJSON(){
+	var dataobj = {
+		"nodes" : nodes,
+		"edges" : edges,
+		"connEdges" : connEdges,
+		"maxNodeID" : maxNodeID,
+		"maxEdgeID" : maxEdgeID,
+		"maxConnEdgeID" : maxConnEdgeID
+	}
+	return JSON.stringify(dataobj);
+}
+
+function setQuery(dataobj){
+	nodes = dataobj.nodes;
+	edges = dataobj.edges;
+	connEdges = dataobj.connEdges;
+	maxNodeID = dataobj.maxNodeID;
+	maxEdgeID = dataobj.maxNodeID;
+	maxConnEdgeID = dataobj.maxConnEdgeID;
+	updateSVG();
+}
+
 var nodeTemplate = {
     id: -1,
     text: "",

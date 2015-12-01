@@ -1,17 +1,40 @@
 function javascriptToJSON(nodes, edges, connEdges){
 	//Ignoring connEdges for now
 	var nodesJSON = "[";
-	$(nodes).each(function(index, value){
-		nodesJSON += "{ id: "+value.id+", label: '"+value.text+"' },";
+	$(nodes).each(function(index, node){
+		if(index > 0){
+			nodesJSON += ",";
+		}
+		nodesJSON += JSON.stringify(node);
 	});
-	nodesJSON = nodesJSON.substring(0,nodesJSON.length - 1) + "]";
+	nodesJSON += "]";
 	
 	var edgesJSON = "[";
-	$(edges).each(function(index, value){
-		edgesJSON += "{ source: "+value.source+", target: "+value.target+", label: '"+value.text+"' },";
+	$(edges).each(function(index, edge){
+		if(index > 0){
+			edgesJSON += ",";
+		}
+		edgesJSON += JSON.stringify(edge);
 	});
-	edgesJSON = edgesJSON.substring(0,edgesJSON.length - 1) + "]";
+	edgesJSON += "]";
 	return "{ nodes: "+nodesJSON+", edges: "+edgesJSON+" }";
+}
+
+function objectToJSON(obj){
+	var toReturn = "{";
+	var isFirst = true;
+	for( var key in obj){
+		if(obj.hasOwnProperty(key)){
+			var value = obj[key];
+			if(!isFirst){
+				toReturn += ",";
+			}
+			toReturn += " "+key+" : "+value+" ";
+			isFirst = false;
+		}
+	}
+	toReturn += "}";
+	return toReturn;
 }
 
 function JSONToResults(resultsJSON){
