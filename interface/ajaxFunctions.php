@@ -48,7 +48,7 @@
 					echo $row['graph_template'];
 				}
 			}
-			
+			$conn = null;
 		}catch(PDOException $e){
 			echo $e->getMessage();
 		}
@@ -73,7 +73,7 @@
 				}
 				$json_ret .= ']}';
 			}
-			
+			$conn = null;
 		}catch(PDOException $e){
 			echo $e->getMessage();
 		}

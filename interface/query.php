@@ -40,7 +40,7 @@
 				}
 				$update->execute(array(':uid' => $this->user_id, ':n' => $this->name, ':dbn' => $this->db_name,
 										':graph' => $this->graph_template, ':mrr' => $this->most_recent_result, ':desc' => $this->description));
-				$conn->close();
+				$conn = null;
 			}catch(PDOException $e){
 				echo $e->getMessage();
 			}
