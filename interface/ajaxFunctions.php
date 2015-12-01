@@ -11,8 +11,8 @@
 				}
 				break;
 			case 'Query':
-				if(isset($_POST['query']) && isset($_POST['databaseName']) ){
-					saveQuery($_POST['name'], $_POST['query'], $_POST['databaseName']);
+				if(isset($_POST['query']) && isset($_POST['databaseName']) && isset($_POST['description'])){
+					saveQuery($_POST['name'], $_POST['query'], $_POST['databaseName'], $_POST['description']);
 					runQuery($_POST['query'], $_POST['databaseName']);
 				}
 				break;
@@ -27,8 +27,8 @@
 				}
 				break;
 			case 'saveQuery':
-				if(isset($_POST['query']) && isset($_POST['databaseName']) ){
-					saveQuery($_POST['name'], $_POST['query'], $_POST['databaseName']);
+				if(isset($_POST['query']) && isset($_POST['databaseName']) && isset($_POST['description'])){
+					saveQuery($_POST['name'], $_POST['query'], $_POST['databaseName'], $_POST['description']);
 				}
 				break;
 			case 'test'	:
@@ -42,11 +42,14 @@
 			require_once 'GlobalConstants.php';
 			global $SERVER, $USERNAME, $PASSWORD, $USER_DATABASE;
 			$conn = new PDO("mysql:host=$SERVER;dbname=$USER_DATABASE;", $USERNAME, $PASSWORD);
-			$stmt = $conn->prepare("SELECT graph_template FROM query WHERE db_name = :dbn AND user_id = :uid AND name = :qname");
-			if($stmt->execute(array(':dbn' => $dbname, ':uid' => 0, ':qname' => $queryName))){
-				if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-					echo $row['graph_template'];
-				}
+			$stmt = $conn->prepare("SELECT * FROM query WHERE db_name = :dbn AND user_id = :uid AND name = :qname");
+			$stmt->setFetchMode(PDO::FETCH_CLASS, 'query');
+			$stmt->execute(array(':dbn' => $dbname, ':uid' => 0, ':qname' => $queryName));
+			$q = $stmt->fetch(PDO::FETCH_CLASS);
+			if($q){
+				//if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+					echo '{ "query" : '.$q->graph_template.', "description" : "'.$q->description.'" }';
+				//}
 			}
 			$conn = null;
 		}catch(PDOException $e){
@@ -81,9 +84,9 @@
 		echo $json_ret;
 	}
 	
-	function saveQuery($name, $queryJSON, $dbname){
+	function saveQuery($name, $queryJSON, $dbname, $desc){
 		$query = new query();
-		$query->setValues(0, $name, $dbname, $queryJSON, null, "A test query.");
+		$query->setValues(0, $name, $dbname, $queryJSON, null, $desc);
 		$query->addToDatabase();
 	}
 	

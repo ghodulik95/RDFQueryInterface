@@ -34,10 +34,11 @@
 				</form>
 			</fieldset>
 			<div id="databases">
-				
+				Database:
 			</div>
 			<div>
 				<button id="saveQuery">Save Query as</button> <input type="text" id="queryName" name="queryName"><br>
+				<textarea id="queryDescription" cols="30" rows="5"></textarea><br>
 				<button id="loadQuery">Load Query: </button> 
 				<select id = "queries"></select>
 			</div>
@@ -83,24 +84,13 @@
 				$("#labelInput").autocomplete({
 					source:[]
 				});
-				updateTags();
 				loadQueries();
 			});
 			var testResult, queryAsJSON;
 			$("#submitQuery").click(function(){
-				//TEST CODE -- real code is commented out below this line (note that this test code is copied from what was generated in the real code)
-				//var queryAsJSON = "{ nodes: [{ id: 0, label: '<http://www.Department2.University1.edu/GraduateStudent*' },{ id: 1, label: '<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>' }], edges: [{ source: 0, target: 1, label: 'edge0' }] }";
 				queryAsJSON = getQueryAsJSON();
 				var dbname = $("#databases option:selected").val();
 				var queryName = $("#queryName").val();
-				//Test code
-				/*var testResultString = "{\"results\": [{\"0\":\"<http://www.Department2.University1.edu/GraduateStudent01/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"0\":\"<http://www.Department2.University1.edu/GraduateStudent02/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}, {\"0\":\"<http://www.Department2.University1.edu/GraduateStudent03/>\",\"1\":\"<http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#GraduateStudent>\"}]}";
-				testResult = JSONToResults(testResultString);
-				console.log(testResult);
-				//alert(getNodeLabel(testResult, 0, 0));
-				processResults(testResult);
-				/*
-				REAL CODE*/
 				$.ajax({
 					type: "POST",
 					url: "ajaxFunctions.php",
@@ -109,12 +99,14 @@
 							query: queryAsJSON,
 							user: 0,
 							name: queryName,
+							description: $("#queryDescription").val(),
 							databaseName: dbname
 						  },
 					success: function(ret) {
 						console.log(ret);
 						results = JSONToResults(ret);
 						processResults(results);
+						loadQueries();
 					}
 				});
 				
@@ -135,9 +127,11 @@
 						  },
 					success: function(ret) {
 						console.log(ret);
-						var query = jQuery.parseJSON(ret);
-						console.log(query);
-						setQuery(query);
+						var queryInfo = jQuery.parseJSON(ret);
+						console.log(queryInfo.query);
+						setQuery(queryInfo.query);
+						$("#queryName").val(queryName);
+						$("#queryDescription").val(queryInfo.description);
 					}
 				});
 			});
@@ -154,35 +148,38 @@
 							query: queryAsJSON,
 							user: 0,
 							name: queryName,
+							description: $("#queryDescription").val(),
 							databaseName: dbname
 						  },
 					success: function(ret) {
+						loadQueries();
 					}
 				});
 			});
 			
 			function updateTags(){
 				//Test data:
-				var tags = ["<http://www.Department2.University1.edu/GraduateStudent01/>","<http://www.Department2.University1.edu/GraduateStudent02/>","<http://www.Department2.University1.edu/GraduateStudent03/>"];
-				$('#labelInput').autocomplete("option", { source: tags });
-				$('#labelInput').focus();
+				//var tags = ["<http://www.Department2.University1.edu/GraduateStudent01/>","<http://www.Department2.University1.edu/GraduateStudent02/>","<http://www.Department2.University1.edu/GraduateStudent03/>"];
+				//$('#labelInput').autocomplete("option", { source: tags });
+				//$('#labelInput').focus();
 				//Comment out when not connected to server
-				/*var db = $("#databases option:selected").val();
+				if($("#labelInput").val() != ""){
+				var db = $("#databases option:selected").val();
 				$.ajax({
-					type: "POST",
-					url: "ajaxFunctions.php",
-					data: {
-							action: 'GetSubjects',
-							databaseName: db,
-							currentInput: $("#labelInput").val()
-						  },
-					success: function(ret) {
-						var tagsRoot = jQuery.parseJSON(ret);
-						var tags = tagsRoot.subjects;
-						$('#labelInput').autocomplete("option", { source: tags });
-						$('#labelInput').focus();
-					}
-				});*/
+						type: "POST",
+						url: "ajaxFunctions.php",
+						data: {
+								action: 'GetSubjects',
+								databaseName: db,
+								currentInput: $("#labelInput").val()
+							  },
+						success: function(ret) {
+							var tagsRoot = jQuery.parseJSON(ret);
+							var tags = tagsRoot.subjects;
+							$('#labelInput').autocomplete("option", { source: tags });
+						}
+					}).done(function() { $('#labelInput').focus(); $('#labelInput').autocomplete('search'); });
+				}
 			}
 			
 			function loadQueries(){
