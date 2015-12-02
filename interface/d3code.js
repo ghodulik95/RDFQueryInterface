@@ -162,16 +162,16 @@ function updateSVG() {
             return d.id
         })
         .attr("x1", function (d) {
-            return w * getNode(d.source).x
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[0];
         })
         .attr("y1", function (d) {
-            return h * getNode(d.source).y
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[1];
         })
         .attr("x2", function (d) {
-            return w * getNode(d.target).x
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[2];
         })
         .attr("y2", function (d) {
-            return h * getNode(d.target).y
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[3];
         });
 
     edgeLines.exit().remove();
@@ -188,16 +188,16 @@ function updateSVG() {
             return d.id
         })
         .attr("x1", function (d) {
-            return w * getNode(d.source).x
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[0];
         })
         .attr("y1", function (d) {
-            return h * getNode(d.source).y
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[1];
         })
         .attr("x2", function (d) {
-            return w * getNode(d.target).x
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[2];
         })
         .attr("y2", function (d) {
-            return h * getNode(d.target).y
+        	return getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[3];
         });
 
     connEdgeLines.exit().remove();
@@ -433,14 +433,21 @@ function onDrag(d, i) {
             if (currentEdge.source == node.id) {
                 var dataEdgeID = "[data-edgeID=\"" + currentEdge.id + "\"]"
                 var line = d3.select(dataEdgeID);
-                line.attr("x1", x);
-                line.attr("y1", y);
+                var newCoordinates = getEdgeCoordinates(w*getNode(currentEdge.source).x, h*getNode(currentEdge.source).y, w*getNode(currentEdge.target).x, h*getNode(currentEdge.target).y);
+                line.attr("x1", newCoordinates[0]);
+                line.attr("y1", newCoordinates[1]);
+                line.attr("x2", newCoordinates[2]);
+                line.attr("y2", newCoordinates[3]);
+                getEdgeCoordinates(w*getNode(d.source).x, h*getNode(d.source).y, w*getNode(d.target).x, h*getNode(d.target).y)[0];
             }
             else if (currentEdge.target == node.id) {
                 var dataEdgeID = "[data-edgeID=\"" + currentEdge.id + "\"]"
                 var line = d3.select(dataEdgeID);
-                line.attr("x2", x);
-                line.attr("y2", y);
+                var newCoordinates = getEdgeCoordinates(w*getNode(currentEdge.source).x, h*getNode(currentEdge.source).y, w*getNode(currentEdge.target).x, h*getNode(currentEdge.target).y);
+                line.attr("x1", newCoordinates[0]);
+                line.attr("y1", newCoordinates[1]);
+                line.attr("x2", newCoordinates[2]);
+                line.attr("y2", newCoordinates[3]);
             }
         }
 
@@ -450,14 +457,20 @@ function onDrag(d, i) {
             if (currentEdge.source == node.id) {
                 var dataEdgeID = "[data-connEdgeID=\"" + currentEdge.id + "\"]"
                 var line = d3.select(dataEdgeID);
-                line.attr("x1", x);
-                line.attr("y1", y);
+                var newCoordinates = getEdgeCoordinates(w*getNode(currentEdge.source).x, h*getNode(currentEdge.source).y, w*getNode(currentEdge.target).x, h*getNode(currentEdge.target).y);
+                line.attr("x1", newCoordinates[0]);
+                line.attr("y1", newCoordinates[1]);
+                line.attr("x2", newCoordinates[2]);
+                line.attr("y2", newCoordinates[3]);
             }
             else if (currentEdge.target == node.id) {
                 var dataEdgeID = "[data-connEdgeID=\"" + currentEdge.id + "\"]"
                 var line = d3.select(dataEdgeID);
-                line.attr("x2", x);
-                line.attr("y2", y);
+                var newCoordinates = getEdgeCoordinates(w*getNode(currentEdge.source).x, h*getNode(currentEdge.source).y, w*getNode(currentEdge.target).x, h*getNode(currentEdge.target).y);
+                line.attr("x1", newCoordinates[0]);
+                line.attr("y1", newCoordinates[1]);
+                line.attr("x2", newCoordinates[2]);
+                line.attr("y2", newCoordinates[3]);
             }
         }
 
@@ -779,6 +792,18 @@ function hasNode(x,y){
     return false;
 }
 
+// returns [x1, y1, x2, y2]
+function getEdgeCoordinates(node1x, node1y, node2x, node2y) {
+	var direction = [node2x-node1x, node2y-node1y];
+	var distance = Math.sqrt(Math.pow(direction[0],2)+Math.pow(direction[1],2));
+	direction[0] = direction[0]/distance; //normalize
+	direction[1] = direction[1]/distance;
+	x1 = node1x + direction[0]*circleRadius;
+	y1 = node1y + direction[1]*circleRadius;
+	x2 = node2x - direction[0]*circleRadius;
+	y2 = node2y - direction[1]*circleRadius;
+	return [x1,y1,x2,y2];
+}
 
 function updateEdgeLocation() {
     for (var i = 0; i < edges.length; i++) {
