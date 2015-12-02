@@ -45,8 +45,11 @@
 			<div>
 				<button id="submitQuery">Submit Query</button>
 			</div>
+			<div>
+				Displaying Result <select id = "resultIndexes"></select>
+			</div>
 			<div id="loading">
-				Results are loading
+				Results are loading 
 			</div>
 		</div>
 		<div class="content">
@@ -62,6 +65,9 @@
 		<script type="text/javascript">
 
 			//INITIALIZE
+			
+			var results = [];
+			var queryChanged = false;
 			$(function(){
 				//Database dropdown
 				var select = $("<select />");
@@ -105,7 +111,8 @@
 					success: function(ret) {
 						console.log(ret);
 						results = JSONToResults(ret);
-						processResults(results);
+						loadResults();
+						processResults();
 						loadQueries();
 					}
 				});
@@ -132,6 +139,11 @@
 						setQuery(queryInfo.query);
 						$("#queryName").val(queryName);
 						$("#queryDescription").val(queryInfo.description);
+						if(queryChanged){
+							results = [];
+							loadResults();
+							queryChanged = false;
+						}
 					}
 				});
 			});
@@ -182,7 +194,10 @@
 				}
 			}
 			
+			$('#queries').change(function() { queryChanged = true; });
+			
 			function loadQueries(){
+				var oldQuery = $('#queries').val();
 				$("#queries").empty();
 				var db = $("#databases option:selected").val();
 				$.ajax({
@@ -199,15 +214,27 @@
 						for (var i=0;i<queries.length;i++){
 						   $('<option/>').val(queries[i]).html(queries[i]).appendTo('#queries');
 						}
+						$('#queries').val(oldQuery);
 					}
 				});
 			}
 			
+		function loadResults(){
+			$('#resultIndexes').empty();
+			if(results.length > 0){
+				for (var i=0;i<results.length;i++){
+				   $('<option/>').val(i).html(i+1).appendTo('#resultIndexes');
+				}
+				$('#results').val(0);
+			}
+		}
+		
+		$('#resultIndexes').change(function() { processResults(); });
+			
 		//Process results given object:
 		// Array of results where
 		//		each result = Array of nodes which have an id and value
-		function processResults(results){
-
+		function processResults(){
 			//Processing of results will go here
 			//Ie displaying results, potentially other things
 			//return getNodeLabel(results, 0, 0);
@@ -220,11 +247,15 @@
 				resultIndex = 0;
 				mode = "result";
 			}
-			var row = results[resultIndex];
-			for (var i = 0; i < nodes.length; i++){
-				newText = row[nodes[i].id]
-				nodes[i].text = newText;
-				d3.select(nodeLabels[0][nodes[i].id]).text(newText);
+			if(results.length > 0){
+				resultIndex =$("#resultIndexes option:selected").val();
+				
+				var row = results[resultIndex];
+				for (var i = 0; i < nodes.length; i++){
+					newText = row[nodes[i].id]
+					nodes[i].text = newText;
+					d3.select(nodeLabels[0][nodes[i].id]).text(newText);
+				}
 			}
 		}
 			

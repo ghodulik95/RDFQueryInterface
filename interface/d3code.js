@@ -45,6 +45,7 @@ function setQuery(dataobj){
 	maxNodeID = dataobj.maxNodeID;
 	maxEdgeID = dataobj.maxNodeID;
 	maxConnEdgeID = dataobj.maxConnEdgeID;
+	clearSVG();
 	updateSVG();
 }
 
@@ -623,6 +624,15 @@ function clickedSave() {
     //selectNode(selectedEntity);
 }
 
+function clearSVG(){
+	nodeLabels.remove();
+	nodeCircles.remove();
+	edgeLines.remove();
+	connEdgeLines.remove();
+	edgeCircles.remove();
+	edgeLabels.remove();
+}
+
 //Delete button clicked
 function clickedDelete() {
     if (selectedEntityType == 0) {
@@ -652,12 +662,7 @@ function clickedDelete() {
         nodes.splice(selectedEntity, 1);
         selectNode(selectedEntity);
         //Redraw SVG completely
-        nodeLabels.remove();
-        nodeCircles.remove();
-        edgeLines.remove();
-        connEdgeLines.remove();
-        edgeCircles.remove();
-        edgeLabels.remove();
+		clearSVG();
         updateSVG();
     }
     if (selectedEntityType == 1) {
