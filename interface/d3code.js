@@ -784,15 +784,10 @@ function hasNode(x,y){
 
 // returns [x1, y1, x2, y2]
 function getEdgeCoordinates(node1x, node1y, node2x, node2y) {
-	console.log("getEdgeCoordinates");
-	console.log(node1x + ' ' + node1y + ' ' + node2x + ' ' + node2y);
 	var direction = [node2x-node1x, node2y-node1y];
-	console.log(direction);
 	var distance = Math.sqrt(Math.pow(direction[0],2)+Math.pow(direction[1],2));
-	console.log(distance);
 	direction[0] = direction[0]/distance; //normalize
 	direction[1] = direction[1]/distance;
-	console.log(direction)
 	x1 = node1x + direction[0]*circleRadius;
 	y1 = node1y + direction[1]*circleRadius;
 	x2 = node2x - direction[0]*circleRadius;
