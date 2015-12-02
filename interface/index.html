@@ -33,6 +33,9 @@
 					<input type="button" value="get labels" onclick="updateTags();">
 				</form>
 			</fieldset>
+			<div>
+				<button value="clearQuery" onclick="clearQuery()">Clear Query</button>
+			</div>
 			<div id="databases">
 				Database:
 			</div>
@@ -164,7 +167,7 @@
 							databaseName: dbname
 						  },
 					success: function(ret) {
-						loadQueries();
+						loadQueries(queryName);
 					}
 				});
 			});
@@ -196,8 +199,11 @@
 			
 			$('#queries').change(function() { queryChanged = true; });
 			
-			function loadQueries(){
+			function loadQueries(selected){
 				var oldQuery = $('#queries').val();
+				if(arguments.length > 0){
+					oldQuery = selected;
+				}
 				$("#queries").empty();
 				var db = $("#databases option:selected").val();
 				$.ajax({

@@ -38,6 +38,16 @@ function getQueryAsJSON(){
 	return JSON.stringify(dataobj);
 }
 
+function clearQuery(){
+	nodes = [];
+	edges = [];
+	connEdges = [];
+	maxNodeID = -1;
+	maxEdgeID = -1;
+	maxConnEdgeID = -1;
+	clearSVG();
+}
+
 function setQuery(dataobj){
 	nodes = dataobj.nodes;
 	edges = dataobj.edges;
