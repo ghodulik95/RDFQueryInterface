@@ -295,10 +295,10 @@ function onClick(d, i) {
     if (mode == "result")
         mode = regularMode;
 
-    //console.log("this is not an object");
+    console.log(d);
     switch (mode) {
         case "node":
-            if (d == undefined) {
+            if ((d == undefined) && (!hasNode(x,y))) {
                 //Create a new node at the click location
                 maxNodeID += 1;
                 nodes.push({
@@ -750,6 +750,25 @@ function getEdgeLocation(edgeID) {
     }
     return false;
 }
+
+function hasNode(x,y){
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        if ((Math.abs(w * node.x - x) <= circleRadius) && (Math.abs(h * node.y - y) <= circleRadius)) {
+        console.log("Occupied");
+        return true;
+        }
+    }
+    for (var i = 0; i < edges.length; i++) {
+        var edge = edges[i];
+        if ((Math.abs(edge.x - x) <= circleRadius) && (Math.abs(edge.y - y) <= circleRadius)) {
+            console.log("Occupied by Edge");
+            return true;
+        }
+    }
+    return false;
+}
+
 
 function updateEdgeLocation() {
     for (var i = 0; i < edges.length; i++) {
