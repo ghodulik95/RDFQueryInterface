@@ -12,7 +12,6 @@ var defaultModeButton = document.getElementById("defaultModeButton");
 defaultModeButton.checked = true;
 mode = defaultModeButton.value;
 
-
 var w = 1080;
 var h = 720;
 var circleRadius = 24;
@@ -116,7 +115,7 @@ function updateSVG() {
 
 
 
-    //Create node nodeCircles
+    //Create node circles
     nodeCircles = layer2.selectAll(".node")
         .data(nodes);
 
@@ -700,9 +699,7 @@ function clickedDelete() {
         edges.splice(selectedEntity, 1);
         selectEdge(selectedEntity);
         //Redraw SVG completely
-        edgeLines.remove();
-        edgeCircles.remove();
-        edgeLabels.remove();
+        clearSVG();
         updateSVG();
         selectedEntityType = -1;
         selectedEntity = -1;
